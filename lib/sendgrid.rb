@@ -238,6 +238,10 @@ module SendGrid
     if @sg_recipients && !@sg_recipients.empty?
       header_opts[:to] = @sg_recipients
     end
+    
+    if mail.bcc && mail.bcc.try(:length) && mail.bcc.length > 0
+      header_opts[:bcc] = mail.bcc
+    end
 
     # Set custom substitions
     if @sg_substitutions && !@sg_substitutions.empty?
