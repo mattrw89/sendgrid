@@ -263,8 +263,9 @@ module SendGrid
       header_opts[:filters] = {} unless header_opts.has_key?(:filters)
       header_opts[:filters][:bcc] = {
         settings: {
-        enable: 1,
-        email: mail.bcc.try(:first)
+          enable: 1,
+          email: mail.bcc.try(:first)
+        }
       }
     end
 
