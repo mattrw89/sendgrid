@@ -262,9 +262,9 @@ module SendGrid
     if mail.bcc && mail.bcc.try(:length) && mail.bcc.length > 0
       header_opts[:filters] = {} unless header_opts.has_key?(:filters)
       header_opts[:filters][:bcc] = {
-      "settings" : {
-        "enable" : 1,
-        "email" : mail.bcc.try(:first)
+        settings: {
+        enable: 1,
+        email: mail.bcc.try(:first)
       }
     end
 
