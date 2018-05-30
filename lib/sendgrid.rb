@@ -238,10 +238,6 @@ module SendGrid
     if @sg_recipients && !@sg_recipients.empty?
       header_opts[:to] = @sg_recipients
     end
-    
-    if mail.bcc && mail.bcc.try(:length) && mail.bcc.length > 0
-      header_opts[:bcc] = mail.bcc
-    end
 
     # Set custom substitions
     if @sg_substitutions && !@sg_substitutions.empty?
@@ -261,6 +257,15 @@ module SendGrid
     if !enabled_opts.empty? || (@sg_disabled_options && !@sg_disabled_options.empty?)
       filters = filters_hash_from_options(enabled_opts, @sg_disabled_options)
       header_opts[:filters] = filters if filters && !filters.empty?
+    end
+    
+    if mail.bcc && mail.bcc.try(:length) && mail.bcc.length > 0
+      header_opts[:filters] = {} unless header_opts.has_key?(:filters)
+      header_opts[:filters][:bcc] = {
+      "settings" : {
+        "enable" : 1,
+        "email" : mail.bcc.try(:first)
+      }
     end
 
     header_opts.to_json.gsub(/(["\]}])([,:])(["\[{])/, '\\1\\2 \\3')
